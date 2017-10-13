@@ -1,1 +1,28 @@
 <h1 class ="page-header">Register Page</h1>
+<form [formGroup]="form">
+  <div class="form-group">
+    <label for="username">Username</label>
+    <div>
+      <input type="text" name="username" class="form-control" autocomplete="off" placeholder="*Username" />
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="email">Email</label>
+    <div>
+      <input type="text" name="email" class="form-control" autocomplete="off" placeholder="*Email" />
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <div>
+      <input type="password" name="password" class="form-control" autocomplete="off" placeholder="*Password" />
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="confirm">Confirm PassWord</label>
+    <div>
+      <input type="password" name="confirm" class="form-control" autocomplete="off" placeholder="*Confirm Password" />
+    </div>
+  </div>
+  <input type="submit" clas="btn btn-primary" value="Submit" />
+</form>
