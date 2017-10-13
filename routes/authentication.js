@@ -21,11 +21,33 @@ module.exports = (router) => {
             password: req.body.password.toLowerCase()
           });
           user.save((err) => {
-            if (err){
-              res.json({ success: false, message: 'Could not save user. Error : ', err});
-            }
-            else{
-              res.json({ success: true, message: 'User saved!'});
+            if (err) {
+              if (err.code === 11000){
+                  res.json({ success: false, message: 'Username or e-mail already exits'});
+              } else {
+                if (err.errors) {
+                  if (err.errors.email) {
+                    res.json( {success: false, message: err.errors.email.message});
+                  } else {
+                    if (err.errors.username) {
+                      res.json( {success: false, message: err.errors.username.message});
+                    } else {
+                      if (err.errors.password) {
+                        res.json( {success: false, message: err.errors.password.message});
+                      } else {
+                        res.json( {success: false, message: err});
+                      }
+
+                    }
+                  }
+                }
+                else {
+                  res.json({ success: false, message: 'Could not save user. Error : ', err});
+                }
+              }
+
+            } else {
+              res.json({ success: true, message: 'User registered!'});
             }
           });
         }
