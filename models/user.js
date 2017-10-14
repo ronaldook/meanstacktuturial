@@ -62,8 +62,8 @@ let validPassword = (password) => {
   if (!password) {
     return false;
   } else {
-    const regExp = new RegExp(/^[a-zA-Z0-9]+$/);
-    return regExp.test(password);
+    const regExp = new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,35}$/);
+    return true;
   }
 }
 
@@ -74,7 +74,7 @@ const passwordValidators = [
   },
   {
     validator: validPassword,
-    message: 'Must must not have special characters or spaces'
+    message: ' Password must include at least one upper case letter, one lower case letter, and one numeric digit.'
   }
 ];
 
