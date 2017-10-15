@@ -3,6 +3,8 @@ const User = require('../models/user');
 module.exports = (router) => {
 
   router.post('/register', (req, res) => {
+
+    console.log('We are getting register!!!!!!!!!');
     //req.body.email
     //req.body.username
     //req.body.password
@@ -54,5 +56,45 @@ module.exports = (router) => {
       }
     }
   });
+
+  router.get('/checkEmail/:email', (req, res) => {
+    if( !req.params.email) {
+      res.json({ success: false, message: 'E-mail was not provided'});
+    } else {
+      User.findOne( {email: req.params.email} , (err, user) => {
+        if (err) {
+          res.json({ success: false, message: err});
+        } else {
+          if (user) {
+            res.json({ success: false, message: 'E-mail is alreay taken'});
+          }
+          else{
+            res.json({ success: false, message: 'E-mail is available'});
+          }
+        }
+      })
+    }
+  });
+
+  router.get('/checkUsername/:username', (req, res) => {
+    console.log("this is for you");
+    if( !req.params.username) {
+      res.json({ success: false, message: 'Username was not provided'});
+    } else {
+      User.findOne( {username: req.params.username} , (err, user) => {
+        if (err) {
+          res.json({ success: false, message: err});
+        } else {
+          if (user) {
+            res.json({ success: false, message: 'Username is alreay taken'});
+          }
+          else{
+            res.json({ success: false, message: 'Username is available'});
+          }
+        }
+      })
+    }
+  });
+
   return router;
 }
