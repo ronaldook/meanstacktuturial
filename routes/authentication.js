@@ -131,8 +131,37 @@ module.exports = (router) => {
     }
   });
 
-  router.get('/profile', (req, res) => {
-    res.send('test');
+  router.use((req, res, next) => {
+    const token = req.headers['authorization']; // Create token found in headers
+    // Check if token was found in headers
+    if (!token) {
+      res.json({ success: false, message: 'No token provided' }); // Return error
+    } else {
+      // Verify the token is valid
+      jwt.verify(token, config.secret, (err, decoded) => {
+        // Check if error is expired or invalid
+        if (err) {
+          res.json({ success: false, message: 'Token invalid: ' + err }); // Return error for token validation
+        } else {
+          req.decoded = decoded; // Create global variable to use in any request beyond
+          next(); // Exit middleware
+        }
+      });
+    }
   });
+  router.get('/profile', (req, res) => {
+      User.findOne({_id: req.decoded.userId}).select('username email').exec((err, user) => {
+        if (err) {
+          res.json({ success: false, message: err });
+        } else {
+          if (!user) {
+            res.json({ success: false, message: 'User not found' });
+          } else {
+            res.json({success: true, user: user });
+          }
+        }
+      });
+  });
+
   return router;
 }
